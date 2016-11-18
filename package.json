@@ -1,0 +1,21 @@
+{
+  "name": "stock-print-server",
+  "version": "0.0.1",
+  "description": "Configure label printers and print labels",
+  "main": "src/index.js",
+  "repository": "git@github.com:cheminfo/stock-print-server.git",
+  "author": "Daniel Kostro <kostro.d@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^3.7.0",
+    "koa": "^1.2.4",
+    "koa-body": "^1.6.0",
+    "koa-router": "^5.4.0",
+    "level-promise": "^2.1.1",
+    "leveldown": "^1.5.0",
+    "levelup": "^1.3.3",
+    "minimist": "^1.2.0",
+    "serialport": "^4.0.6",
+    "twig": "^0.10.0"
+  }
+}
