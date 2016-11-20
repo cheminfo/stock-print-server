@@ -27,7 +27,10 @@ function process(db) {
             const all = [];
             const stream = db.createReadStream();
             stream.on('data', function(data) {
-                all.push(data);
+                all.push({
+                    key: data.key,
+                    value: JSON.parse(data.value)
+                });
             });
             stream.on('error', reject);
             stream.on('end', () => resolve(all));

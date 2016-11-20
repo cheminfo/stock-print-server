@@ -8,7 +8,7 @@ const router = require('koa-router')();
 
 router.get('/ports', function * (next) {
     const ports = yield serialUtil.getPorts();
-    this.body = ports.filter(port => port.manufacturer);
+    this.body = ports//.filter(port => port.manufacturer);
 });
 
 router.put('/db/format', function * () {
@@ -46,8 +46,11 @@ router.delete('/db/format/:name', function * () {
 });
 
 router.post('/print', function * () {
-    printer.print(this.request.body);
-    this.body = {sent: true};
+    console.log('print');
+    console.log(this.request.body);
+    var sent = yield printer.print(this.request.body);
+    console.log(sent);
+    this.body = {sent};
 });
 
 module.exports = router;

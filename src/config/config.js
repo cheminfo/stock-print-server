@@ -14,4 +14,11 @@ if(argv.config) {
 function getPath(p) {
     return path.resolve(path.join(__dirname, '../..'), p);
 }
-module.exports = yaml.safeLoad(fs.readFileSync(configFile));
+
+const config = yaml.safeLoad(fs.readFileSync(configFile));
+
+if(config.server && config.server.cert) {
+    config.server.cert.key = getPath(config.server.cert.key);
+    config.server.cert.cert = getPath(config.server.cert.cert);
+}
+module.exports = config;
