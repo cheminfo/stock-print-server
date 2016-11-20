@@ -1,25 +1,23 @@
 'use strict';
 
-const serialport = require('serialport');
+const SerialPort = require('serialport');
 const instances = {};
 module.exports = {
-    get: function(port) {
-        if(instances[port]) {
-            return Promise.resolve(instances[port]);
+    get: function(comName) {
+        if(instances[comName]) {
+            return Promise.resolve(instances[comName]);
         }
 
         return new Promise(function(resolve, reject) {
-             var s = new serialport(port, {
+             var s = new SerialPort(comName, {
                  baudrate: 9600
              });
-             s.open(function(err) {
-                 if(err) {
-                     reject(err);
-                 } else {
-                     instances[port] = s;
-                     resolve(s);
-                 }
-             });
+
+            s.on('error', reject);
+            s.on('open', () => {
+                instances[comName] = s;
+                resolve(s);
+            });
         });
     }
 };

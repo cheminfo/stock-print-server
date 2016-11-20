@@ -1746,9 +1746,9 @@ semver@~5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.1.1.tgz#a3292a373e6f3e0798da0b20641b9a9c5bc47e19"
 
-serialport@^4.0.6:
+SerialPort@^4.0.6:
   version "4.0.6"
-  resolved "https://registry.yarnpkg.com/serialport/-/serialport-4.0.6.tgz#2ea4c1a2b6ad91d9cacd78e8e530f8969ac650ae"
+  resolved "https://registry.yarnpkg.com/SerialPort/-/SerialPort-4.0.6.tgz#2ea4c1a2b6ad91d9cacd78e8e530f8969ac650ae"
   dependencies:
     bindings "1.2.1"
     commander "^2.9.0"
