@@ -36,5 +36,15 @@ function process(db) {
             stream.on('end', () => resolve(all));
         });
     };
+
+    db.getKeysByKind = function (kind) {
+        return db.getByKind(kind).then(els => els.map(el => el.key));
+    };
+
+    db.getByKind = function (kind) {
+        return db.getAll().then(all => {
+            return all.filter(el => el.value.kind === kind);
+        });
+    };
     return db;
 }

@@ -22,11 +22,7 @@ router.put('/db/format', function * () {
     }
 });
 
-router.get('/db/format/names', function * () {
-     // get available format names
-    this.body = yield dbs.format.getKeys();
-});
-
+// Get formats
 router.get('/db/format', function * () {
     // get formats
     this.body = yield dbs.format.getAll();
@@ -34,10 +30,25 @@ router.get('/db/format', function * () {
 
 router.get('/db/format/:name', function * () {
     // get format
-    var entry = yield dbs.format.get(this.params.name);
+    const entry = yield dbs.format.get(this.params.name);
     this.body = JSON.parse(entry);
 });
 
+router.get('/db/format/kind/:kind', function * () {
+    this.body = yield dbs.format.getByKind(this.params.kind);
+});
+
+// Get format names
+router.get('/db/format/names', function * () {
+     // get available format names
+    this.body = yield dbs.format.getKeys();
+});
+
+router.get('/db/format/kind/:kind/names', function * () {
+    this.body = yield dbs.format.getKeysByKind(this.params.kind);
+});
+
+// Delete format
 router.delete('/db/format/:name', function * () {
     yield dbs.format.del(this.params.name);
     this.body = {
@@ -45,6 +56,7 @@ router.delete('/db/format/:name', function * () {
     };
 });
 
+// Insert/update format
 router.post('/print', function * () {
     console.log('print');
     console.log(this.request.body);
