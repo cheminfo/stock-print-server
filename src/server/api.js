@@ -1,68 +1,61 @@
 'use strict';
 
-const serialUtil = require('../serial/util');
-const dbs = require('../db/dbs');
-const printer = require('../printer/printer');
-
 const router = require('koa-router')();
+const deviceManager = require('../serial/deviceManager');
+const raw = require('raw-body');
+const inflate = require('inflation');
 
-router.get('/ports', function * (next) {
-    const ports = yield serialUtil.getPorts();
-    this.body = ports.filter(port => port.manufacturer);
-});
-
-router.put('/db/format', function * () {
-    // Save a print format
-    console.log(this.request.body);
-    const key = this.request.body.key;
-    const value = this.request.body.value;
-    yield dbs.format.put(key, JSON.stringify(value));
-    this.body = {
-        success: true
-    }
-});
-
-// Get formats
-router.get('/db/format', function * () {
-    // get formats
-    this.body = yield dbs.format.getAll();
-});
-
-router.get('/db/format/:name', function * () {
-    // get format
-    const entry = yield dbs.format.get(this.params.name);
-    this.body = JSON.parse(entry);
-});
-
-router.get('/db/format/kind/:kind', function * () {
-    this.body = yield dbs.format.getByKind(this.params.kind);
-});
-
-// Get format names
-router.get('/db/format/names', function * () {
-     // get available format names
-    this.body = yield dbs.format.getKeys();
-});
-
-router.get('/db/format/kind/:kind/names', function * () {
-    this.body = yield dbs.format.getKeysByKind(this.params.kind);
-});
-
-// Delete format
-router.delete('/db/format/:name', function * () {
-    yield dbs.format.del(this.params.name);
-    this.body = {
-        success: true
-    };
+router.get('/devices/id', function *() {
+    this.body = deviceManager.getDeviceIds();
 });
 
 // Insert/update format
-router.post('/print', function * () {
-    console.log('print');
-    console.log(this.request.body);
-    var sent = yield printer.print(this.request.body);
-    console.log(sent);
-    this.body = {sent};
+router.post('/send/:deviceId', function *() {
+    var data;
+    try {
+        if (typeof this.request.body === 'object') {
+            const type = Object.prototype.toString.call(this.request.body).slice(8, -1).toLowerCase();
+            if (type === 'object' && this.request.body.b64data) {
+                console.log('b64data');
+                data = Buffer.from(this.request.body.b64data, 'base64');
+            } else if (JSON.stringify(this.request.body) === '{}') {
+                console.log('raw body');
+                data = yield raw(inflate(this.req), {
+                    limit: '1mb'
+                });
+                console.log(data.toString());
+            } else {
+                this.status = 400;
+                handleError.call(this, new Error('Bad arguments'));
+                return;
+            }
+        } else if (typeof this.request.body === 'string') {
+            console.log('string');
+            data = this.request.body;
+        } else {
+            console.log('bad');
+            this.status = 400;
+            handleError.call(this, new Error('Bad arguments'));
+            return;
+        }
+        const res = yield deviceManager.addRequest(this.params.deviceId, data);
+        this.body = {
+            status: 'success',
+            message: res
+        }
+    } catch (err) {
+        this.body = {
+            status: 'failed',
+            error: err.message
+        }
+    }
 });
+
+function handleError(err) {
+    this.body = {
+        status: 'failed',
+        error: err.message
+    };
+}
 
 module.exports = router;
