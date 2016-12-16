@@ -6,7 +6,7 @@ const deviceManager = new DeviceManager({
     optionCreator: function(portInfo) {
         if (portInfo.manufacturer === 'Keyspan') {
             return {
-                baudrate: 9600,
+                baudRate: 38400,
                 getIdCommand: '!SHOW HOST_NAME\n',
                 getIdResponseParser: function (buffer) {
                     var m = /^Host Name = (.*)\r\n$/.exec(buffer);
