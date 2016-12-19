@@ -19,8 +19,8 @@ const deviceManager = new DeviceManager({
         }
     }
 });
-//
-// deviceManager.refresh();
-// setInterval(() => deviceManager.refresh(), 60000);
+
+deviceManager.refresh();
+setInterval(() => deviceManager.refresh(), 60000);
 
 module.exports = deviceManager;

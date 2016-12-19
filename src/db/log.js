@@ -3,6 +3,7 @@ const getMac = require('getmac').getMac;
 const ip = require('ip');
 const Roc = require('rest-on-couch-client');
 const VERSION = require('../constants').VERSION;
+const config = require('../config/config');
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -22,8 +23,9 @@ exports.start = function (couchDB, interval) {
                 return;
             }
             const address = ip.address();
+            const protocol = config.server.cert ? 'https' : 'http';
             const content = {
-                macAddress, ip: address, version: VERSION
+                macAddress, ip: address, version: VERSION, port: config.server.port, protocol
             };
             roc.view('printServerByMacAddress', {
                 key: macAddress
@@ -32,7 +34,7 @@ exports.start = function (couchDB, interval) {
                     return roc.create({
                         $kind: 'printServer',
                         $content: content,
-                        $owners: 'printerAdmin'
+                        $owners: ['printerAdmin']
                     });
                 } else {
                     return roc.update(Object.assign(data[0], {$content: content}))
