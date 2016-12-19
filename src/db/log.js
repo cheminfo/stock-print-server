@@ -4,9 +4,11 @@ const ip = require('ip');
 const Roc = require('rest-on-couch-client');
 const VERSION = require('../constants').VERSION;
 
+const SECOND = 1000;
+const MINUTE = 60 * SECOND;
 let intervalId;
 exports.start = function (couchDB, interval) {
-    interval = interval || 590; // couchdb default auth timeout is 600
+    interval = interval || 5 * MINUTE;
     const roc = new Roc(couchDB);
     log();
     intervalId = setInterval(() => {
