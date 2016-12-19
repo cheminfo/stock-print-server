@@ -10,7 +10,7 @@ const fs = require('fs');
 
 if(config.log && config.log['rest-on-couch']) {
     const rocLog = require('../db/log');
-    rocLog.start(config.log['rest-on-couch']);
+    rocLog.start(config.log['rest-on-couch'], config.log.interval);
 }
 
 if(config.server && config.server.cert) {

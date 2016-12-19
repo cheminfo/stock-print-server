@@ -5,13 +5,13 @@ const Roc = require('rest-on-couch-client');
 const VERSION = require('../constants').VERSION;
 
 let intervalId;
-exports.start = function (couchDB) {
-    console.log(couchDB);
+exports.start = function (couchDB, interval) {
+    interval = interval || 590; // couchdb default auth timeout is 600
     const roc = new Roc(couchDB);
     log();
     intervalId = setInterval(() => {
         log();
-    }, 1000 * 60 * 10);
+    }, interval);
 
     function log() {
         getMac((err, macAddress) => {
