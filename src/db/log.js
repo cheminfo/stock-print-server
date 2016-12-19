@@ -31,7 +31,8 @@ exports.start = function (couchDB, interval) {
                 if (!data.length) {
                     return roc.create({
                         $kind: 'printServer',
-                        $content: content
+                        $content: content,
+                        $owners: 'printerAdmin'
                     });
                 } else {
                     return roc.update(Object.assign(data[0], {$content: content}))
