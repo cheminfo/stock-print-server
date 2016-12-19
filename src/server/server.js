@@ -7,6 +7,12 @@ const cors = require('koa-cors');
 const config = require('../config/config');
 const fs = require('fs');
 
+
+if(config.log && config.log['rest-on-couch']) {
+    const rocLog = require('../db/log');
+    rocLog.start(config.log['rest-on-couch']);
+}
+
 if(config.server && config.server.cert) {
     https.createServer({
         key: fs.readFileSync(config.server.cert.key),
