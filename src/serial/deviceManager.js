@@ -4,7 +4,7 @@ const DeviceManager = require('serial-requests').DeviceManager;
 
 const deviceManager = new DeviceManager({
     optionCreator: function(portInfo) {
-        if (portInfo.manufacturer === 'Keyspan') {
+        if (portInfo.manufacturer && portInfo.manufacturer.startsWith('Keyspan')) {
             return {
                 baudRate: 38400,
                 getIdCommand: '!SHOW HOST_NAME\n',
