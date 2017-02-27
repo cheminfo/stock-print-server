@@ -1,10 +1,13 @@
 'use strict';
 
 const DeviceManager = require('serial-requests').DeviceManager;
+const config = require('../config/config');
+
+const serial = config.serial || 'rs232';
 
 const deviceManager = new DeviceManager({
     optionCreator: function(portInfo) {
-        if (portInfo.manufacturer && portInfo.manufacturer.startsWith('Keyspan')) {
+        if (serial === 'keyspan' && portInfo.manufacturer && portInfo.manufacturer.startsWith('Keyspan') || serial === 'rs232') {
             return {
                 baudRate: 38400,
                 getIdCommand: '!SHOW HOST_NAME\n',
