@@ -1,8 +1,0 @@
-log:
-  interval: 300000
-  rest-on-couch:
-    url: https://eln.cheminfo.org/roc/
-    database: printers
-    username: printer@cheminfo.org
-    password: password
-    authTimeout: 1500000
