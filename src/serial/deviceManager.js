@@ -9,8 +9,8 @@ const deviceManager = new DeviceManager({
     optionCreator: function(portInfo) {
         if (serial === 'keyspan' && portInfo.manufacturer && portInfo.manufacturer.startsWith('Keyspan') || serial === 'rs232') {
             return {
-                baudRate: 38400,
-                getIdCommand: '!SHOW HOST_NAME\n',
+                baudRate: config.serial.baudRate,
+                getIdCommand: config.serial.idCommand,
                 getIdResponseParser: function (buffer) {
                     var m = /^Host Name = (.*)\r\n$/.exec(buffer);
                     if (m && m[1]) {
