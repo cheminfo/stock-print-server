@@ -11,6 +11,7 @@
     "start-dev": "nodemon src/server/server.js"
   },
   "dependencies": {
+    "debug": "^2.6.3",
     "getmac": "^1.2.1",
     "inflation": "^2.0.0",
     "ip": "^1.1.4",

@@ -4,6 +4,7 @@ const ip = require('ip');
 const Roc = require('rest-on-couch-client');
 const VERSION = require('../constants').VERSION;
 const config = require('../config/config');
+const debug = require('debug')('stock-print-server:couchdb-log');
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -19,9 +20,10 @@ exports.start = function (couchDB, interval) {
     function log() {
         getMac((err, macAddress) => {
             if (err) {
-                console.error('Could not get mac address', err.message);
+                debug('Could not get mac address', err.message);
                 return;
             }
+            debug('mac address', macAddress);
             const address = ip.address();
             const protocol = config.server.cert ? 'https' : 'http';
             const content = {
@@ -38,10 +40,10 @@ exports.start = function (couchDB, interval) {
                         $owners: ['printerAdmin']
                     });
                 } else {
-                    return roc.update(Object.assign(data[0], {$content: content}))
+                    return roc.update(Object.assign(data[0], {$content: content})).then(() => debug('entry added to couchdb'))
                 }
             }).catch(err => {
-                console.error('Error logging printServer to couchdb', err);
+                debug('Error logging printServer to couchdb', err);
             });
         })
     }
