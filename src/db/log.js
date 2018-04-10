@@ -28,7 +28,8 @@ exports.start = function (couchDB, interval) {
             const protocol = config.server.cert ? 'https' : 'http';
             const content = {
                 macAddress, ip: address, version: VERSION, port: config.server.port, protocol,
-                url: `${protocol}://${address}:${config.server.port}`
+                url: `${protocol}://${address}:${config.server.port}`,
+                type: 'cognitive'
             };
             roc.view('printServerByMacAddress', {
                 key: macAddress
