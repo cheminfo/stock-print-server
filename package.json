@@ -1,6 +1,6 @@
 {
   "name": "stock-print-server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Configure label printers and print labels",
   "main": "src/index.js",
   "repository": "git@github.com:cheminfo/stock-print-server.git",
